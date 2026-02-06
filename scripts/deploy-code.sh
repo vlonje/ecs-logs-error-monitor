@@ -5,7 +5,7 @@
 # ============================================================================
 # Description: Packages and uploads Lambda function code
 # Usage: ./scripts/deploy-code.sh <config-file>
-# Example: ./scripts/deploy-code.sh configs/agadpay-lambda-prod.env
+# Example: ./scripts/deploy-code.sh configs/vinapp-lambda-prod.env
 # ============================================================================
 
 set -e  # Exit on error
@@ -22,8 +22,8 @@ if [ -z "$CONFIG_FILE" ]; then
     echo "Usage: ./scripts/deploy-code.sh <config-file>"
     echo ""
     echo "Examples:"
-    echo "  ./scripts/deploy-code.sh configs/agadpay-lambda-prod.env"
-    echo "  ./scripts/deploy-code.sh configs/agadpay-ecs-staging.env"
+    echo "  ./scripts/deploy-code.sh configs/vinapp-lambda-prod.env"
+    echo "  ./scripts/deploy-code.sh configs/vinapp-ecs-staging.env"
     echo ""
     exit 1
 fi

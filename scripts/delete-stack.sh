@@ -5,7 +5,7 @@
 # ============================================================================
 # Description: Deletes CloudFormation stack and all associated resources
 # Usage: ./scripts/delete-stack.sh <config-file>
-# Example: ./scripts/delete-stack.sh configs/agadpay-lambda-prod.env
+# Example: ./scripts/delete-stack.sh configs/vinapp-lambda-prod.env
 # ============================================================================
 
 set -e  # Exit on error
@@ -22,8 +22,8 @@ if [ -z "$CONFIG_FILE" ]; then
     echo "Usage: ./scripts/delete-stack.sh <config-file>"
     echo ""
     echo "Examples:"
-    echo "  ./scripts/delete-stack.sh configs/agadpay-lambda-prod.env"
-    echo "  ./scripts/delete-stack.sh configs/agadpay-ecs-staging.env"
+    echo "  ./scripts/delete-stack.sh configs/vinapp-lambda-prod.env"
+    echo "  ./scripts/delete-stack.sh configs/vinapp-ecs-staging.env"
     echo ""
     exit 1
 fi

@@ -5,7 +5,7 @@
 # ============================================================================
 # Description: Deploys CloudFormation stack for error monitoring Lambda
 # Usage: ./scripts/deploy-infrastructure.sh <config-file>
-# Example: ./scripts/deploy-infrastructure.sh configs/agadpay-lambda-prod.env
+# Example: ./scripts/deploy-infrastructure.sh configs/vinapp-lambda-prod.env
 # ============================================================================
 
 set -e  # Exit on error
@@ -22,8 +22,8 @@ if [ -z "$CONFIG_FILE" ]; then
     echo "Usage: ./scripts/deploy-infrastructure.sh <config-file>"
     echo ""
     echo "Examples:"
-    echo "  ./scripts/deploy-infrastructure.sh configs/agadpay-lambda-prod.env"
-    echo "  ./scripts/deploy-infrastructure.sh configs/agadpay-ecs-staging.env"
+    echo "  ./scripts/deploy-infrastructure.sh configs/vinapp-lambda-prod.env"
+    echo "  ./scripts/deploy-infrastructure.sh configs/vinapp-ecs-staging.env"
     echo ""
     exit 1
 fi

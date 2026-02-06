@@ -38,12 +38,12 @@ aws-error-monitor/
 │   └── lambda_function.py         # Lambda function code
 ├── configs/
 │   ├── .env.template              # Config template
-│   ├── agadpay-lambda-prod.env    # AgadPay Lambda PROD
-│   ├── agadpay-lambda-staging.env # AgadPay Lambda STAGING
-│   ├── agadpay-ecs-prod.env       # AgadPay ECS PROD
-│   ├── agadpay-ecs-staging.env    # AgadPay ECS STAGING
-│   ├── agadpay-rds-prod.env       # AgadPay RDS PROD
-│   └── agadpay-rds-staging.env    # AgadPay RDS STAGING
+│   ├── vinapp-lambda-prod.env    # vinapp Lambda PROD
+│   ├── vinapp-lambda-staging.env # vinapp Lambda STAGING
+│   ├── vinapp-ecs-prod.env       # vinapp ECS PROD
+│   ├── vinapp-ecs-staging.env    # vinapp ECS STAGING
+│   ├── vinapp-rds-prod.env       # vinapp RDS PROD
+│   └── vinapp-rds-staging.env    # vinapp RDS STAGING
 ├── scripts/
 │   ├── deploy-infrastructure.sh   # Deploy CloudFormation stack
 │   ├── deploy-code.sh             # Upload Lambda code
@@ -131,7 +131,7 @@ This uploads the actual monitoring code to your Lambda function.
 
 | Parameter | Description | Example |
 |-----------|-------------|---------|
-| `PROJECT_NAME` | Project identifier | AgadPay, APDU, MyProject |
+| `PROJECT_NAME` | Project identifier | vinapp, APDU, MyProject |
 | `ENVIRONMENT` | Environment (PROD/STAGING/UAT) | PROD |
 | `SERVICE_NAME` | Human-readable service name | Lambda Functions |
 | `SERVICE_TYPE` | Service type (lambda/ecs/rds) | lambda |
@@ -202,8 +202,8 @@ Searches for:
 ### Deploy Multiple Monitors
 
 ```bash
-# Deploy all AgadPay monitors
-for config in configs/agadpay-*.env; do
+# Deploy all vinapp monitors
+for config in configs/vinapp-*.env; do
     ./scripts/deploy-infrastructure.sh $config
     ./scripts/deploy-code.sh $config
 done
@@ -213,7 +213,7 @@ done
 
 ```bash
 # Update code for specific monitor
-./scripts/deploy-code.sh configs/agadpay-lambda-prod.env
+./scripts/deploy-code.sh configs/vinapp-lambda-prod.env
 
 # Update all monitors
 for config in configs/*.env; do
@@ -224,7 +224,7 @@ done
 ### Delete Stack
 
 ```bash
-./scripts/delete-stack.sh configs/agadpay-lambda-prod.env
+./scripts/delete-stack.sh configs/vinapp-lambda-prod.env
 ```
 
 ## Troubleshooting
@@ -269,7 +269,7 @@ vim configs/newproject-lambda-prod.env
 
 ```bash
 # Copy similar project config
-cp configs/agadpay-lambda-prod.env configs/newproject-lambda-prod.env
+cp configs/vinapp-lambda-prod.env configs/newproject-lambda-prod.env
 
 # Update values
 vim configs/newproject-lambda-prod.env

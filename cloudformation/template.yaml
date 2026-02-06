@@ -8,7 +8,7 @@ Description: 'Generic Error Monitor - CloudWatch Logs to Email via SES'
 Parameters:
   ProjectName:
     Type: String
-    Description: Project name (e.g., AgadPay, APDU)
+    Description: Project name (e.g., vinapp, VinX)
     
   Environment:
     Type: String
