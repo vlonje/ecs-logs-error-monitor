@@ -1,0 +1,12 @@
+fields @timestamp, @message
+| sort @timestamp desc
+| limit 10000
+| filter @message like /ERROR:/
+  or @message like /FATAL:/
+  or @message like /PANIC:/
+  or @message like /deadlock/i
+  or @message like /connection reset/i
+  or @message like /could not connect/i
+  or @message like /syntax error/i
+  or @message like /duplicate key/i
+  or @message like /constraint violation/i

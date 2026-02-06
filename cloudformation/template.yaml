@@ -1,0 +1,144 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Generic Error Monitor - CloudWatch Logs to Email via SES'
+
+# ============================================================================
+# PARAMETERS
+# ============================================================================
+
+Parameters:
+  ProjectName:
+    Type: String
+    Description: Project name (e.g., AgadPay, APDU)
+    
+  Environment:
+    Type: String
+    Description: Environment name (PROD, STAGING, UAT)
+    AllowedValues:
+      - PROD
+      - STAGING
+      - UAT
+    
+  ServiceName:
+    Type: String
+    Description: Service name (e.g., Lambda Functions, ECS Services, RDS Databases)
+    
+  ServiceType:
+    Type: String
+    Description: Service type for query selection
+    AllowedValues:
+      - lambda
+      - ecs
+      - rds
+    
+  LogGroups:
+    Type: String
+    Description: Comma-separated list of CloudWatch Log Groups to monitor
+    
+  SenderEmail:
+    Type: String
+    Description: SES verified sender email address
+    
+  RecipientEmail:
+    Type: String
+    Description: Comma-separated list of recipient email addresses
+    
+  IntervalMinutes:
+    Type: Number
+    Description: Monitoring time window in minutes
+    Default: 60
+    
+  ExistingIAMRoleArn:
+    Type: String
+    Description: ARN of existing IAM role for Lambda execution
+
+# ============================================================================
+# RESOURCES
+# ============================================================================
+
+Resources:
+
+  # Lambda Function
+  ErrorMonitorFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub '${ProjectName}-${ServiceType}-monitor-${Environment}'
+      Runtime: python3.11
+      Handler: lambda_function.lambda_handler
+      Role: !Ref ExistingIAMRoleArn
+      Timeout: 300
+      MemorySize: 256
+      Environment:
+        Variables:
+          PROJECT_NAME: !Ref ProjectName
+          ENVIRONMENT: !Ref Environment
+          SERVICE_NAME: !Ref ServiceName
+          SERVICE_TYPE: !Ref ServiceType
+          LOG_GROUPS: !Ref LogGroups
+          SENDER_EMAIL: !Ref SenderEmail
+          RECIPIENT_EMAIL: !Ref RecipientEmail
+          INTERVAL_MINUTES: !Ref IntervalMinutes
+      Code:
+        ZipFile: |
+          def lambda_handler(event, context):
+              return {
+                  'statusCode': 200,
+                  'body': 'Placeholder - Deploy actual code using deploy-code.sh'
+              }
+      Description: !Sub 'Error monitor for ${ProjectName} ${ServiceName} - ${Environment}'
+
+  # CloudWatch Log Group for Lambda
+  LambdaLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub '/aws/lambda/${ErrorMonitorFunction}'
+      RetentionInDays: 7
+
+  # EventBridge Schedule Rule (1 hour interval)
+  ScheduleRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Name: !Sub '${ProjectName}-${ServiceType}-monitor-${Environment}-schedule'
+      Description: !Sub 'Triggers error monitor every hour for ${ProjectName} ${ServiceName}'
+      ScheduleExpression: 'rate(1 hour)'
+      State: ENABLED
+      Targets:
+        - Arn: !GetAtt ErrorMonitorFunction.Arn
+          Id: ErrorMonitorTarget
+
+  # Lambda Permission for EventBridge
+  EventBridgeInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref ErrorMonitorFunction
+      Action: lambda:InvokeFunction
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt ScheduleRule.Arn
+
+# ============================================================================
+# OUTPUTS
+# ============================================================================
+
+Outputs:
+  LambdaFunctionName:
+    Description: Name of the Lambda function
+    Value: !Ref ErrorMonitorFunction
+    Export:
+      Name: !Sub '${AWS::StackName}-FunctionName'
+      
+  LambdaFunctionArn:
+    Description: ARN of the Lambda function
+    Value: !GetAtt ErrorMonitorFunction.Arn
+    Export:
+      Name: !Sub '${AWS::StackName}-FunctionArn'
+      
+  ScheduleRuleName:
+    Description: Name of the EventBridge schedule rule
+    Value: !Ref ScheduleRule
+    Export:
+      Name: !Sub '${AWS::StackName}-ScheduleRule'
+      
+  LogGroupName:
+    Description: CloudWatch Log Group for Lambda execution logs
+    Value: !Ref LambdaLogGroup
+    Export:
+      Name: !Sub '${AWS::StackName}-LogGroup'

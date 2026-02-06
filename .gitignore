@@ -1,0 +1,31 @@
+# Lambda deployment package
+*.zip
+lambda.zip
+
+# Environment variables (sensitive data)
+*.env
+!.env.template
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# AWS
+.aws/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

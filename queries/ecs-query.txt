@@ -1,0 +1,11 @@
+fields @timestamp, @message, @logStream
+| sort @timestamp desc
+| limit 10000
+| filter @message like /An unexpected error/
+  or @message like /unhandled exception/i
+  or @message like /ERROR/
+  or @message like /Error/
+  or @message like /FATAL/
+  or @message like /Fatal/
+  or @message like /failed/i
+  or @message like /exception/i
