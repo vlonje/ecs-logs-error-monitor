@@ -1,4 +1,4 @@
-# AWS Error Monitor
+# AWS Logs-Error Monitor
 
 Generic, reusable CloudWatch Logs error monitoring system with email alerting via SES.
 
@@ -131,7 +131,7 @@ This uploads the actual monitoring code to your Lambda function.
 
 | Parameter | Description | Example |
 |-----------|-------------|---------|
-| `PROJECT_NAME` | Project identifier | vinapp, APDU, MyProject |
+| `PROJECT_NAME` | Project identifier | vinapp, vinX, MyProject |
 | `ENVIRONMENT` | Environment (PROD/STAGING/UAT) | PROD |
 | `SERVICE_NAME` | Human-readable service name | Lambda Functions |
 | `SERVICE_TYPE` | Service type (lambda/ecs/rds) | lambda |
